@@ -1,0 +1,10 @@
+Package: covarShiny
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com",
+                  role = c("aut", "cre"))
+Description: Parses FASTA files and generates covariation matrix, covariation heatmap imaging, and all dinucleotide combinations for all i and j positions across sequences.
+Depends: R (>= 3.3.2)
+License: freeware
+Encoding: UTF-8
+LazyData: true
