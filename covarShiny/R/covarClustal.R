@@ -159,10 +159,6 @@ binder=function(a,b){
 }
 
 
-#returns the expected nucleotide frequency as derived from pairs of valid dinucleotides 
-#between anywhere i and j in clustal output. Excludes any i or j part of i,j inclusive of NA chars like '-' or '.'
-#---------additionally returns counts of dint pair participating nt at i,j
-#same function as above but with t-->u
 getExpNtFreq=function(seqs,pos1,pos2, dC = 'RNA'){
   if (dC == 'RNA'){
     diffChar = 'u'
@@ -226,10 +222,8 @@ getExpNtFreq=function(seqs,pos1,pos2, dC = 'RNA'){
   #additionally returns counts of dint pair participating at i,j
   list('ExpNt'=exp.ntfreq,'validcount'=validcount)
 }
+
 #this uses individual sequence's dinucleotide output to calculate expectations for dinucleotides.
-
-
-#same as above, but with getExpNtFreq--> getExpNtFreq
 getExpDints=function(seqs,pos1,pos2, dC = 'RNA'){
   if (missing(pos1)){
     pos1 = 1
@@ -272,7 +266,8 @@ getExpDints=function(seqs,pos1,pos2, dC = 'RNA'){
 
 #this deploys the packages methods in order to get
 # for each i,j positions in sequence alignments 
-# the sum(from 1-16) of (observed # of dinucleotides - expected # of dinucleotides)^2 / expected # dinucleotides
+                                        # the sum(from 1-16) of
+## (observed  of dinucleotides of this type - expected  of dinucleotides of this type)^2 / expected dinucleotides of this type.
 #--------returns a two dimensional matrix with chi square values.
 #this takes  either 1. specification of filename by file.choose OR a manual entry passed as args
 # this does not name rows and columncs for csv/excel output
@@ -310,6 +305,8 @@ covarRNA=function(filepath,filename,pos1,pos2, dC = 'RNA'){
   for(i in pos1:pos2){
     for(j in i:pos2){
         x = sum(bp.chi[i,j,])
+        #takes chisquare values and categories(types) of dinucleotide pairs and calcs p values
+        ## degrees of freedom are n-1 where n is types of dinucleotide pairs occurring at i,j.
         covar.grid[i,j] = pchisq(x, chi.categories[i,j])
     }
   }
@@ -388,8 +385,6 @@ covarRNAui=function(f,pos1,pos2,dC='RNA'){
   colnames(g) = pos1:pos2
   list("covar"=g, "pvals"=pval.grid)
  }
-
-  ## degrees of freedom are n-1 where n is types of dinucleotide pairs occurring at i,j.
 
 
 
